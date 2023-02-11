@@ -14,17 +14,24 @@ export default function EventForm() {
         limit: "yes",
         contact: ""
     })
+    const imgToBase64 = (img) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onload = () => {
+            // reader.result => base64 img
+            addEvent(data.name, reader.result, data.tags, data.category, data.description, data.location, data.whocanjoin, data.limit, data.contact);
+        };
+    }
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log(data);
-        addEvent(data);
+        imgToBase64(data.poster);
     }
     return(
         <form className={styles.form} onSubmit={submitHandler}>
             <label>Event name</label>
             <input type="text" value={data.name} onChange={(e) => setData({...data, name: e.target.value})} />
             <label>Event poster</label>
-            <input type="text" value={data.poster} onChange={(e) => setData({...data, poster: e.target.value})} />
+            <input type="file" onChange={(e) => setData({...data, poster: e.target.files[0]})} />
             <label>Tags</label>
             <input type="text" value={data.tags} onChange={(e) => setData({...data, tags: e.target.value})} />
             <label>Category</label>
