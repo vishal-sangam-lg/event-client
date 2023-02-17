@@ -1,4 +1,14 @@
 import axios from "axios";
+const baseUrl = process.env.REACT_APP_API_URL;
+
+// Bearer Token
+const BearerToken = () =>
+  localStorage.getItem("jwt") ? JSON.parse(localStorage.getItem("jwt")) : false;
+// Axios Config Instance
+const instance = axios.create({
+  baseURL: baseUrl,
+});
+instance.defaults.headers.common["Authorization"] = BearerToken();
 
 export default function addEvent(
   name,
@@ -13,8 +23,8 @@ export default function addEvent(
   limit,
   contact
 ) {
-  axios
-    .post("http://localhost:8000/add-event", {
+  instance
+    .post("/add-event", {
       name: name,
       poster: poster,
       tags: tags,
